@@ -1,0 +1,81 @@
+/* SATu color tokens and color-only rules */
+:root {
+    --satu-primary: #053866;
+    --satu-primary-dark: #032849;
+    --satu-secondary: #00b3b8;
+    --satu-secondary-soft: #e4fafa;
+    --satu-ink: #18334b;
+    --satu-muted: #61758a;
+    --satu-page: #f7fafc;
+    --satu-line: #eaf0f5;
+    --satu-white: #fff;
+}
+
+body {
+    color: var(--satu-ink);
+    background:
+        radial-gradient(ellipse at 88% 12%, rgba(0, 179, 184, .12), transparent 31rem),
+        radial-gradient(ellipse at 8% 90%, rgba(5, 56, 102, .07), transparent 30rem),
+        var(--satu-page);
+}
+
+.brand-mark,
+.hero-title,
+.visual-card-title,
+.visual-card-label {
+    color: var(--satu-primary);
+}
+
+.brand-mark .accent,
+.hero-title .accent,
+.visual-symbol span {
+    color: var(--satu-secondary);
+}
+
+.brand-subtitle,
+.hero-copy,
+footer {
+    color: var(--satu-muted);
+}
+
+.eyebrow {
+    color: var(--satu-primary);
+    border-color: rgba(0, 179, 184, .24);
+    background: var(--satu-secondary-soft);
+}
+
+.eyebrow-dot {
+    background: var(--satu-secondary);
+}
+
+.btn-satu {
+    --bs-btn-color: var(--satu-white);
+    --bs-btn-bg: var(--satu-primary);
+    --bs-btn-border-color: var(--satu-primary);
+    --bs-btn-hover-color: var(--satu-white);
+    --bs-btn-hover-bg: var(--satu-primary-dark);
+    --bs-btn-hover-border-color: var(--satu-primary-dark);
+    --bs-btn-active-bg: var(--satu-primary-dark);
+    --bs-btn-active-border-color: var(--satu-primary-dark);
+    color: var(--bs-btn-color);
+    box-shadow: 0 .8rem 1.6rem rgba(5, 56, 102, .16);
+}
+
+.visual-glow {
+    background: linear-gradient(145deg, rgba(0, 179, 184, .16), rgba(5, 56, 102, .08));
+}
+
+.visual-card {
+    border-color: rgba(255, 255, 255, .85);
+    background: rgba(255, 255, 255, .9);
+    box-shadow: 0 1.5rem 4rem rgba(5, 56, 102, .12);
+}
+
+.visual-line {
+    background: var(--satu-line);
+}
+
+.visual-chip {
+    color: var(--satu-primary);
+    background: var(--satu-secondary-soft);
+}
