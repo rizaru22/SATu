@@ -1,8 +1,8 @@
 <?php
 
-namespace App\\Livewire\\Exam;
+namespace App\Livewire\Exam;
 
-use Livewire\\Component;
+use Livewire\Component;
 
 class Login extends Component
 {
