@@ -1,8 +1,8 @@
 <?php
 
-use App\\Livewire\\Exam\\Login as ExamLogin;
-use App\\Livewire\\Staff\\Login as StaffLogin;
-use Illuminate\\Support\\Facades\\Route;
+use App\Livewire\Exam\Login as ExamLogin;
+use App\Livewire\Staff\Login as StaffLogin;
+use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
 
