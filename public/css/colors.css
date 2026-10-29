@@ -1,5 +1,7 @@
 /* SATu color tokens and color-only rules */
 :root {
+    --bs-primary: #053866;
+    --bs-primary-rgb: 5, 56, 102;
     --satu-primary: #053866;
     --satu-primary-dark: #032849;
     --satu-secondary: #00b3b8;
@@ -50,3 +52,16 @@ body {
 }
 .visual-line { background: var(--satu-line); }
 .visual-chip { color: var(--satu-primary); background: var(--satu-secondary-soft); }
+
+/* Bootstrap primary actions follow the SATu brand palette. */
+.btn-primary {
+    --bs-btn-color: var(--satu-white);
+    --bs-btn-bg: var(--satu-primary);
+    --bs-btn-border-color: var(--satu-primary);
+    --bs-btn-hover-color: var(--satu-white);
+    --bs-btn-hover-bg: var(--satu-primary-dark);
+    --bs-btn-hover-border-color: var(--satu-primary-dark);
+    --bs-btn-active-color: var(--satu-white);
+    --bs-btn-active-bg: var(--satu-primary-dark);
+    --bs-btn-active-border-color: var(--satu-primary-dark);
+}
