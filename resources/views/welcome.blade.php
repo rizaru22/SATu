@@ -17,8 +17,15 @@
             --satu-muted: #61758a;
         }
 
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
         body {
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
             color: var(--satu-ink);
             background:
                 radial-gradient(ellipse at 88% 12%, rgba(0, 179, 184, .12), transparent 31rem),
@@ -26,7 +33,7 @@
                 #f7fafc;
         }
 
-        .navbar { background: rgba(255,255,255,.88); backdrop-filter: blur(12px); }
+        .navbar { flex: 0 0 auto; background: rgba(255,255,255,.88); backdrop-filter: blur(12px); }
         .brand-mark {
             color: var(--satu-primary);
             font-size: 1.8rem;
@@ -36,7 +43,7 @@
         }
         .brand-mark .accent { color: var(--satu-secondary); }
         .brand-subtitle { color: var(--satu-muted); font-size: .68rem; letter-spacing: .12em; }
-        .hero { min-height: calc(100vh - 145px); }
+        .hero { flex: 1 1 auto; min-height: 0; overflow: hidden; }
         .eyebrow {
             display: inline-flex;
             align-items: center;
@@ -82,7 +89,7 @@
         .hero-visual {
             position: relative;
             display: grid;
-            min-height: 340px;
+            min-height: min(340px, 43vh);
             place-items: center;
         }
         .visual-glow {
@@ -130,11 +137,18 @@
             font-size: .8rem;
             font-weight: 700;
         }
-        footer { color: var(--satu-muted); font-size: .82rem; }
+        footer { flex: 0 0 auto; color: var(--satu-muted); font-size: .82rem; }
         @media (max-width: 767.98px) {
-            .hero { min-height: auto; }
-            .hero-visual { min-height: 290px; }
-            .visual-card { padding: 1.5rem; }
+            .hero { overflow-y: auto; }
+            .hero-visual { min-height: 220px; }
+            .visual-card { padding: 1.25rem; }
+            .hero-copy { line-height: 1.6; }
+        }
+        @media (max-height: 680px) {
+            .hero { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+            .hero-title { font-size: clamp(2.2rem, 5vw, 3.5rem); }
+            .hero-visual { min-height: 200px; }
+            .visual-card { padding: 1.25rem; }
         }
         @media (prefers-reduced-motion: no-preference) {
             .visual-card { animation: float-in .7s ease-out both; }
