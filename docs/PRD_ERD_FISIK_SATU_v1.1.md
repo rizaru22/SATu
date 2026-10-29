@@ -27,7 +27,7 @@ PRD sudah mendefinisikan domain sekolah, bank soal, pelaksanaan, pengerjaan, pen
 | Penerbitan kartu | Simpan metadata batch dan audit, bukan password plaintext | Jaga rahasia kredensial |
 | Rate limit | Terapkan pembatasan login/token sejak awal | Ambang final dapat dikonfigurasi |
 | Insiden tab | Peringatan pertama; insiden kedua mengunci secara default | Ambang perlu persetujuan |
-| Pemulihan | Pengawas yang ditugaskan dapat membuka sesi terkunci dengan alasan wajib dan audit | Admin memiliki pemulihan khusus |
+| Pemulihan | Hanya admin dapat membuka sesi terkunci; alasan wajib dan audit | Pengawas tidak memiliki izin membuka sesi terkunci |
 | Pemindahan ruang | Simpan riwayat penempatan, jangan menimpa histori | Jawaban dan attempt tetap utuh |
 | Isian singkat | Trim spasi tepi dan normalisasi huruf besar/kecil; dukung jawaban alternatif | Tanda baca/format angka perlu keputusan |
 | Impor | CSV UTF-8 sebagai baseline, preview dan validasi sebelum commit | XLSX bisa menyusul |
@@ -73,7 +73,7 @@ Tipe mengikuti konvensi Laravel dan MySQL/MariaDB; tipe akhir harus diverifikasi
 - room_student_assignments: id, student_id FK, exam_room_id FK, assigned_by FK users, starts_at, ends_at nullable, reason nullable, timestamps. Perpindahan menutup penempatan sebelumnya dan membuat record baru; cegah dua penempatan aktif yang bertentangan melalui transaksi/service.
 
 ### Kredensial dan kartu peserta
-- exam_assignments: id, exam_id FK, student_id FK, username VARCHAR(80) UNIQUE, password VARCHAR(255) berisi hash, status, issued_at nullable, issued_by FK users nullable, password_changed_at nullable, timestamps.
+- exam_assignments: id, exam_id FK, student_id FK, username VARCHAR(80) UNIQUE, password VARCHAR(255) berisi hash, status, issued_at nullable, issued_by FK users nullable, password_changed_at nullable, timestamps.\n- Login peserta wajib menerima kode ujian, username, dan password. Kode ujian dipetakan ke exams.code yang aktif; autentikasi hanya berhasil jika assignment milik ujian itu valid.
 - Constraint wajib: UNIQUE(exam_id, student_id) dan UNIQUE(username).
 - Password diverifikasi terhadap assignment untuk judul ujian terkait. Jangan simpan/log plaintext dan jangan letakkan password pada URL. Reset menerbitkan password baru dan membatalkan password lama.
 - credential_issuance_batches: id, exam_id FK, batch_code UNIQUE, created_by FK users, printed_at nullable, recipient_count, notes nullable, timestamps. Metadata saja, tanpa password plaintext.
@@ -106,22 +106,22 @@ Alur: upload → validasi format/header → preview → validasi baris → tampi
 ## 6. Autentikasi dan UI
 
 - Staf memakai users dan autentikasi Laravel/Fortify yang sudah ada.
-- Peserta memakai alur terpisah di /ujian/login dan diverifikasi terhadap exam_assignments, bukan users.
+- Peserta memakai alur terpisah di /ujian/login dan memasukkan kode ujian, username, serta password; verifikasi terhadap exam_assignments, bukan users.
 - Setelah kredensial valid, tampilkan identitas dari students untuk konfirmasi sebelum mapel tersedia.
 - Bootstrap 5 menjadi satu-satunya framework UI; jangan mencampur class Flux/Tailwind dengan Bootstrap pada halaman/layout yang dimigrasikan.
-- Karena kredensial berlaku per judul ujian, halaman login harus mengetahui judul ujian secara jelas. Rekomendasi: kode/judul ujian pada kartu atau URL khusus ujian; keputusan ini perlu disepakati sebelum route final.
+- Kode ujian dimasukkan langsung oleh peserta pada halaman login dan harus cocok dengan exams.code; username dan password diverifikasi dalam lingkup judul ujian tersebut.
 - Peran awal: admin, guru penanggung jawab mapel, pengawas. Siswa adalah actor domain students/exam_assignments, bukan akun users.
 
 ## 7. Gate sebelum migration
 
 - [ ] Setujui aturan jadwal antara exam_subjects, exam_sittings, dan exam_rooms.
 - [ ] Putuskan cara halaman login mengetahui judul ujian.
-- [ ] Setujui kewenangan pembukaan sesi terkunci dan ambang insiden.
-- [ ] Setujui normalisasi jawaban isian singkat.
+- [x] Pembukaan sesi terkunci hanya boleh dilakukan admin; alasan wajib dan audit.\n- [ ] Setujui ambang insiden perpindahan tab.
+- [x] Isian singkat: abaikan perbedaan huruf besar/kecil dan trim spasi di awal/akhir; jangan otomatis mengubah tanda baca atau format angka.
 - [ ] Setujui sumber identitas resmi dan format impor.
 - [ ] Tetapkan target peserta serentak serta rencana backup/restore.
 - [ ] Setelah itu, buat migrations, model, factory, dan tes constraint.
 
 ## 8. Tahap berikutnya
 
-Tahap 2 adalah fondasi Laravel: autentikasi staf, role/permission, sekolah, kelas, siswa, guru, dan mata pelajaran. UI menggunakan Bootstrap 5 secara konsisten; interaksi menggunakan Livewire 4. Login staf dan login peserta tetap dua alur terpisah.
+Tahap 2 dimulai dengan kerangka UI login peserta menggunakan Bootstrap 5 dan Livewire 4. Autentikasi belum boleh dianggap aktif sebelum migrations exam_assignments/exams/students dan service verifikasi selesai. Setelah fondasi database disetujui, lanjutkan autentikasi staf, role/permission, sekolah, kelas, siswa, guru, dan mata pelajaran. Login staf dan peserta tetap dua alur terpisah.
